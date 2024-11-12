@@ -1,15 +1,14 @@
-const db = require("../config/firebase");
+const db = require('../firebase.js'); // Asumiendo que `firebase.js` es el archivo con la estructura en memoria
 
 const saveUrl = async (shortCode, originalUrl) => {
-  await db.collection("urls").doc(shortCode).set({ originalUrl });
+  db.saveUrl(shortCode, originalUrl);
 };
 
 const getUrl = async (shortCode) => {
-  const doc = await db.collection("urls").doc(shortCode).get();
-  return doc.exists ? doc.data().originalUrl : null;
+  return db.getUrl(shortCode);
 };
 
 module.exports = {
   saveUrl,
-  getUrl,
+  getUrl
 };

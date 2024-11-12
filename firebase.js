@@ -1,9 +1,19 @@
-const admin = require("firebase-admin");
-const serviceAccount = require("./<nombre-del-archivo>.json");
+// En lugar de inicializar Firebase, usa un objeto en memoria
+const db = new Map();
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-});
+module.exports = {
+  // Función para guardar una URL en la "base de datos" en memoria
+  saveUrl: (shortCode, originalUrl) => {
+    db.set(shortCode, originalUrl);
+  },
 
-const db = admin.firestore();
-module.exports = { db };
+  // Función para obtener una URL usando su código
+  getUrl: (shortCode) => {
+    return db.get(shortCode);
+  },
+
+  // Función opcional para eliminar URLs (si fuera necesario)
+  deleteUrl: (shortCode) => {
+    db.delete(shortCode);
+  }
+};

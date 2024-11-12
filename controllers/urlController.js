@@ -1,4 +1,6 @@
+const axios = require("axios");
 const { saveUrl, getUrl } = require("../services/urlServices");
+
 const toBase62 = (num) => {
   const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
   let result = "";
@@ -16,9 +18,16 @@ const shortenUrl = async (req, res) => {
   }
 
   const shortCode = toBase62(Date.now());
+
   try {
     await saveUrl(shortCode, originalUrl);
-    res.json({ shortUrl: `${req.protocol}://${req.get("host")}/${shortCode}` });
+
+    const faviconUrl = `https://www.google.com/s2/favicons?sz=64&domain_url=${originalUrl}`;
+
+    res.json({
+      shortUrl: `${req.protocol}://${req.get("host")}/${shortCode}`,
+      favicon: faviconUrl
+    });
   } catch (error) {
     console.error("Error saving URL:", error);
     res.status(500).json({ error: "Failed to shorten URL" });
