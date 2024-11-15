@@ -13,7 +13,7 @@ const toBase62 = (num) => {
 
 const shortenUrl = async (req, res) => {
   const { originalUrl } = req.body;
-  const userId = req.user ? req.user.id : null;
+  const userId = req.user || null;
   if (!originalUrl) {
     return res.status(400).json({ error: 'URL is required' });
   }
