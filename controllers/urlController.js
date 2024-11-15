@@ -2,8 +2,7 @@ const axios = require('axios');
 const { saveUrl, getUrl } = require('../services/urlServices');
 
 const toBase62 = (num) => {
-  const chars =
-    '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
   let result = '';
   while (num > 0) {
     result = chars[num % 62] + result;
@@ -14,6 +13,7 @@ const toBase62 = (num) => {
 
 const shortenUrl = async (req, res) => {
   const { originalUrl } = req.body;
+  const userId = req.user ? req.user.id : null;
   if (!originalUrl) {
     return res.status(400).json({ error: 'URL is required' });
   }
@@ -21,7 +21,7 @@ const shortenUrl = async (req, res) => {
   const shortCode = toBase62(Date.now());
 
   try {
-    await saveUrl(shortCode, originalUrl);
+    await saveUrl(shortCode, originalUrl, userId);
 
     const faviconUrl = `https://www.google.com/s2/favicons?sz=64&domain_url=${originalUrl}`;
 
@@ -29,6 +29,7 @@ const shortenUrl = async (req, res) => {
       originalUrl,
       shortUrl: `${req.protocol}://${req.get('host')}/${shortCode}`,
       favicon: faviconUrl,
+      userId,
     });
   } catch (error) {
     console.error('Error saving URL:', error);

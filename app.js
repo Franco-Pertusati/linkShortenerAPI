@@ -4,7 +4,7 @@ const urlRoutes = require("./routes/urlRoutes");
 
 const app = express();
 
-app.use(cors({ origin: 'http://localhost:4200' }));  // Permitir solicitudes desde localhost:4200
+app.use(cors({ origin: 'http://localhost:4200' }));
 app.use(express.json());
 app.use("/", urlRoutes);
 
