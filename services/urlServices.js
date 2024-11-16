@@ -7,7 +7,6 @@ const saveUrl = async (shortCode, originalUrl, userId) => {
       userId: userId || null,
       createdAt: new Date().toISOString(),
     });
-    console.log(`URL saved: ${shortCode}`);
   } catch (error) {
     console.error('Error saving URL to Firestore:', error);
     throw new Error('Failed to save URL');

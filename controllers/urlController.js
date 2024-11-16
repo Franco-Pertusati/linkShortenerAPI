@@ -2,7 +2,8 @@ const axios = require('axios');
 const { saveUrl, getUrl } = require('../services/urlServices');
 
 const toBase62 = (num) => {
-  const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  const chars =
+    '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
   let result = '';
   while (num > 0) {
     result = chars[num % 62] + result;
@@ -13,7 +14,7 @@ const toBase62 = (num) => {
 
 const shortenUrl = async (req, res) => {
   const { originalUrl } = req.body;
-  const userId = req.user || null;
+  const { userId } = req.body;
   if (!originalUrl) {
     return res.status(400).json({ error: 'URL is required' });
   }
