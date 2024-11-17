@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { saveUrl, getUrl } = require('../services/urlServices');
+const { saveUrl, getUrl, getUrlsByUserId } = require('../services/urlServices');
 
 const toBase62 = (num) => {
   const chars =
@@ -53,27 +53,19 @@ const redirectUrl = async (req, res) => {
 };
 
 const getUserUrls = async (req, res) => {
-  const { userId } = req.params; // Asegúrate de enviar el userId como parte de la URL
+  const { userId } = req.params;
 
   if (!userId) {
     return res.status(400).json({ error: 'User ID is required' });
   }
 
   try {
-    // Consulta la colección "urls" filtrando por userId
-    const urlsSnapshot = await db.collection('urls').where('userId', '==', userId).get();
-
-    if (urlsSnapshot.empty) {
+    const userUrls = await getUrlsByUserId(userId);
+    if (!userUrls.length) {
       return res.status(404).json({ error: 'No URLs found for this user' });
     }
 
-    // Construimos un array con los datos de cada documento
-    const urls = urlsSnapshot.docs.map(doc => ({
-      id: doc.id, // ID del documento
-      ...doc.data(), // Datos del documento
-    }));
-
-    res.json({ userId, urls });
+    res.json({ userId, urls: userUrls });
   } catch (error) {
     console.error('Error retrieving user URLs:', error);
     res.status(500).json({ error: 'Failed to retrieve user URLs' });
