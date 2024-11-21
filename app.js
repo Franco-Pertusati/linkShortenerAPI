@@ -5,6 +5,7 @@ const urlRoutes = require('./routes/urlRoutes');
 const app = express();
 
 app.use(cors({ origin: 'https://franco-pertusati.github.io' }));
+app.use(cors({ origin: 'http://localhost:4200' }));
 app.use(express.json());
 app.use('/', urlRoutes);
 
