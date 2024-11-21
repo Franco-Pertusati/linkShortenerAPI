@@ -5,7 +5,7 @@ const urlRoutes = require('./routes/urlRoutes');
 const app = express();
 const allowedOrigins = [
   /https:\/\/franco-pertusati\.github\.io/,
-  'http://localhost:4200'
+  'http://localhost:4200/home'
 ];
 
 app.use(cors({
