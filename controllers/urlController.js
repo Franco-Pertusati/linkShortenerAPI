@@ -20,7 +20,6 @@ const shortenUrl = async (req, res) => {
   }
 
   const shortCode = toBase62(Date.now());
-  const faviconUrl = `https://www.google.com/s2/favicons?sz=64&domain_url=${originalUrl}`;
 
   try {
     await saveUrl(shortCode, originalUrl, userId);
@@ -28,7 +27,6 @@ const shortenUrl = async (req, res) => {
       originalUrl,
       shortUrl: `${req.protocol}://${req.get('host')}/${shortCode}`,
       userId,
-      faviconUrl,
     });
   } catch (error) {
     console.error('Error saving URL:', error);
