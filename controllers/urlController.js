@@ -23,13 +23,9 @@ const shortenUrl = async (req, res) => {
 
   try {
     await saveUrl(shortCode, originalUrl, userId);
-
-    const faviconUrl = `https://www.google.com/s2/favicons?sz=64&domain_url=${originalUrl}`;
-
     res.json({
       originalUrl,
       shortUrl: `${req.protocol}://${req.get('host')}/${shortCode}`,
-      favicon: faviconUrl,
       userId,
     });
   } catch (error) {
